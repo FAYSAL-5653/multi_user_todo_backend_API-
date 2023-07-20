@@ -39,17 +39,21 @@ class UserController extends Controller
             ->count();
 
         if ($count == 1) {
-            // User Login-> JWT Token Issue
+
             $token = JWTToken::CreateToken($request->input('email'));
             return response()->json([
                 'status' => 'success',
                 'message' => 'User Login Successful',
+                'token' => $token,
             ]);
         } else {
             return response()->json([
                 'status' => 'failed',
-                'message' => 'Unauthorized',
+                'message' => 'unauthorized',
             ]);
+
         }
+
     }
+
 }

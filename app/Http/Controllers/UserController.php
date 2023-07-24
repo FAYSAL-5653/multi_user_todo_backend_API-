@@ -6,6 +6,7 @@ use App\Mail\OTPmail;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
@@ -108,6 +109,25 @@ class UserController extends Controller
                 'status' => 'failed',
                 'message' => 'unauthorized',
             ]);
+        }
+    }
+
+    public function ResetPassword(Request $request)
+    {
+        try {
+            $email = $request->header('email');
+            $password = $request->input('password');
+            User::where('email', '=', $email)->update(['password' => $password]);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Request Successful',
+            ], 200);
+
+        } catch (Exception $exception) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Something Went Wrong',
+            ], 200);
         }
     }
 
